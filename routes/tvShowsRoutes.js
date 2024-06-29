@@ -10,6 +10,9 @@ const tvShowsController = require('../controllers/tvShowsController');
  * * function to define and chain route handlers
  */
 
+//* aggregation routes - aggregation pipeline
+router.route('/stats').get(tvShowsController.getTvShowStats);
+
 router
   .route('/')
   .get(tvShowsController.getTvShows)
