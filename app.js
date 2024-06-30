@@ -5,6 +5,11 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 const morgan = require('morgan');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./models/swagger_output.json');
+
+const AppErrorClass = require('./utils/appErrorClass');
+const appErrorHandler = require('./middleware/errorHandler');
 
 //* require the routes
 const tvShowsRoutes = require('./routes/tvShowsRoutes');
@@ -37,13 +42,23 @@ app.use(express.urlencoded({ extended: false })); //? parses incoming requests w
 app.use('/api/v1/tv-shows', tvShowsRoutes);
 app.use('/api/v1/users', usersRoutes);
 
+//*************************** SWAGGER ****************** */
+const swaggerOptions = {
+  swaggerOptions: {
+    docExpansion: 'none',
+    defaultModelExpandDepth: -1,
+    filter: true
+  }
+};
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
 //* error handler middleware
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Can't find ${req.originalUrl} on this server!`
-  });
+  next(new AppErrorClass(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
+app.use(appErrorHandler.errorHandler);
 
 //*************************** EXPORTS ****************** */
 
