@@ -203,7 +203,11 @@ const showSchema = new Schema({
   status: {
     type: String,
     required: [true, 'Show status is required'],
-    trim: true
+    trim: true,
+    enum: {
+      values: ['Running', 'Ended'],
+      message: 'Status must be Running or Ended'
+    }
   },
   runtime: {
     type: Number,
@@ -224,7 +228,8 @@ const showSchema = new Schema({
   },
   rating: {
     type: ratingSchema,
-    required: [true, 'Rating is required']
+    required: [true, 'Rating is required'],
+    min: [1, 'Rating be above 1.0']
   },
   weight: {
     type: Number,
@@ -260,5 +265,34 @@ const showSchema = new Schema({
     required: [true, 'Links are required']
   }
 });
+
+/**
+ * * DOCUMENT MIDDLEWARE: runs before .save() and .create()
+ * * but not .insertMany() or .updateMany()
+ *  */
+
+//* Validate that at least one genre is provided
+showSchema.pre('save', function (next) {
+  if (typeof this.genres === 'string') {
+    this.genres = [this.genres];
+  }
+
+  if (this.genres.length === 0) {
+    return next(new Error('A TV Show must have at least one genre'));
+  }
+
+  next();
+});
+
+/**
+ * * QUERY MIDDLEWARE
+ *  */
+showSchema.pre('find', function (next) {
+  this.find({}).sort('name');
+  console.log(this);
+  next();
+});
+
+//************** EXPORTS ************** */
 
 module.exports = mongoose.model('TvShow', showSchema);
