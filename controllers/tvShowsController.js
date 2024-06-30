@@ -154,8 +154,7 @@ exports.getRunningFoxTvShows = appErrorHandler.catchAsync(
       {
         $match: {
           status: 'Running',
-          'network.name': 'FOX',
-          genres: 'Drama'
+          'network.name': 'FOX'
         }
       },
       {
