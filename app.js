@@ -45,13 +45,15 @@ app.use('/api/v1/users', usersRoutes);
 //*************************** SWAGGER ****************** */
 const swaggerOptions = {
   swaggerOptions: {
-    docExpansion: 'none',
-    defaultModelExpandDepth: -1,
     filter: true
   }
 };
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use(
+  '/api-docs',
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, swaggerOptions)
+);
 
 //* error handler middleware
 app.all('*', (req, res, next) => {
