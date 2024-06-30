@@ -12,6 +12,7 @@ const tvShowsController = require('../controllers/tvShowsController');
 
 //* aggregation routes - aggregation pipeline
 router.route('/stats').get(tvShowsController.getTvShowStats);
+router.route('/runningFoxTvShows').get(tvShowsController.getRunningFoxTvShows);
 
 router
   .route('/')
