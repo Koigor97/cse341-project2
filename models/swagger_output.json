@@ -1,0 +1,347 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "TV Shows API",
+    "description": "This API allows users to manage TV shows and user information. It includes endpoints to create, read, update, and delete TV shows, as well as user management. The API supports various query parameters for filtering, sorting, and paginating through the TV show data.\n\n## Features\n- **TV Show Management**: Create, read, update, and delete TV shows.\n- **User Management**: Create, read, update, and delete users.\n- **Statistics**: Retrieve aggregated statistics about the TV shows.\n- **Custom Queries**: Get running TV shows on specific networks",
+    "contact": {
+      "email": "koigorfogbawa@gmail.com",
+      "url": "https://github.com/Koigor97"
+    }
+  },
+  "host": "localhost:8000",
+  "basePath": "/",
+  "schemes": ["https", "http"],
+  "paths": {
+    "/api/v1/tv-shows/stats": {
+      "get": {
+        "tags": ["TV Shows"],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/tv-shows/runningFoxTvShows": {
+      "get": {
+        "tags": ["TV Shows"],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/tv-shows/": {
+      "get": {
+        "tags": ["TV Shows"],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": ["TV Shows"],
+        "description": "Create a new TV Show",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TVShow"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "TV show created"
+          }
+        }
+      }
+    },
+    "/api/v1/tv-shows/{id}": {
+      "get": {
+        "tags": ["TV Shows"],
+        "description": "Get a single TV Show by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A TV show object",
+            "schema": {
+              "$ref": "#/definitions/TVShow"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["TV Shows"],
+        "description": "Update a TV Show by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "TV show object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TVShow"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TV show updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["TV Shows"],
+        "description": "Delete a TV Show by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "TV show deleted"
+          }
+        }
+      }
+    },
+    "/api/v1/users/": {
+      "get": {
+        "tags": ["User"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": ["User"],
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "tags": ["User"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Country": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "timezone": { "type": "string" }
+      },
+      "required": ["name", "code", "timezone"]
+    },
+    "Network": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "number" },
+        "name": { "type": "string" },
+        "country": { "$ref": "#/definitions/Country" }
+      },
+      "required": ["id", "name", "country"]
+    },
+    "Schedule": {
+      "type": "object",
+      "properties": {
+        "time": { "type": "string" },
+        "days": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["time", "days"]
+    },
+    "Rating": {
+      "type": "object",
+      "properties": {
+        "average": { "type": "number" }
+      },
+      "required": ["average"]
+    },
+    "Externals": {
+      "type": "object",
+      "properties": {
+        "tvrage": { "type": "number" },
+        "thetvdb": { "type": "number" },
+        "imdb": { "type": "string" }
+      },
+      "required": ["tvrage", "thetvdb", "imdb"]
+    },
+    "Image": {
+      "type": "object",
+      "properties": {
+        "medium": { "type": "string" },
+        "original": { "type": "string" }
+      },
+      "required": ["medium", "original"]
+    },
+    "Links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": { "type": "string" }
+          },
+          "required": ["href"]
+        },
+        "previousepisode": {
+          "type": "object",
+          "properties": {
+            "href": { "type": "string" }
+          },
+          "required": ["href"]
+        }
+      },
+      "required": ["self", "previousepisode"]
+    },
+    "TvShow": {
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "language": { "type": "string" },
+        "genres": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Running", "Ended"]
+        },
+        "runtime": { "type": "number" },
+        "premiered": { "type": "string", "format": "date" },
+        "officialSite": { "type": "string" },
+        "schedule": { "$ref": "#/definitions/Schedule" },
+        "rating": { "$ref": "#/definitions/Rating" },
+        "weight": { "type": "number" },
+        "network": { "$ref": "#/definitions/Network" },
+        "webChannel": { "type": "object" },
+        "externals": { "$ref": "#/definitions/Externals" },
+        "image": { "$ref": "#/definitions/Image" },
+        "summary": { "type": "string" },
+        "updated": { "type": "number" },
+        "_links": { "$ref": "#/definitions/Links" }
+      },
+      "required": [
+        "url",
+        "name",
+        "type",
+        "language",
+        "genres",
+        "status",
+        "runtime",
+        "premiered",
+        "officialSite",
+        "schedule",
+        "rating",
+        "weight",
+        "network",
+        "externals",
+        "image",
+        "summary",
+        "updated",
+        "_links"
+      ]
+    }
+  }
+}
