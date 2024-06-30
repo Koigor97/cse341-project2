@@ -172,10 +172,6 @@ const linksSchema = new Schema({
  * * @property {Links} _links - Links object
  */
 const showSchema = new Schema({
-  id: {
-    type: Number,
-    required: [true, 'Show ID is required']
-  },
   url: {
     type: String,
     required: [true, 'Show URL is required'],
@@ -184,7 +180,8 @@ const showSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Show name is required'],
-    trim: true
+    trim: true,
+    unique: true
   },
   type: {
     type: String,
