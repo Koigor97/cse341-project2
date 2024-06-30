@@ -9,7 +9,7 @@
       "url": "https://github.com/Koigor97"
     }
   },
-  "host": "localhost:8000",
+  "host": "cse341-project2-l44o.onrender.com",
   "basePath": "/",
   "schemes": ["https", "http"],
   "paths": {
