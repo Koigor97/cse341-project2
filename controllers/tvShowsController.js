@@ -1,8 +1,9 @@
 //* Defining business logic for tv-shows collections
 
-const { raw } = require('express');
 const TvShow = require('../models/tvShowModel');
 const QueryAPIFeatures = require('../utils/queryFeatures');
+const appErrorHandler = require('../middleware/errorHandler');
+const AppErrorClass = require('../utils/appErrorClass');
 //********************* CONTROLLERS ****************** */
 
 /**
@@ -12,24 +13,22 @@ const QueryAPIFeatures = require('../utils/queryFeatures');
  ** @param {Object} res - The response object.
  ** @return {Promise<void>} A promise that resolves when the response is sent.
  */
-exports.getTvShows = async (req, res) => {
-  try {
-    // TODO: EXECUTE THE QUERY
-    const features = new QueryAPIFeatures(TvShow.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const tvShows = await features.query;
 
-    // TODO: SEND RESPONSE
-    res
-      .status(200)
-      .json({ status: 'success', results: tvShows.length, data: { tvShows } });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+exports.getTvShows = appErrorHandler.catchAsync(async (req, res, next) => {
+  // TODO: EXECUTE THE QUERY
+  // #swagger.tags = ['TV Shows']
+  const features = new QueryAPIFeatures(TvShow.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const tvShows = await features.query;
+
+  // TODO: SEND RESPONSE
+  res
+    .status(200)
+    .json({ status: 'success', results: tvShows.length, data: { tvShows } });
+});
 
 /**
  ** Retrieves a single TV show from the database and returns it as a JSON response.
@@ -37,14 +36,18 @@ exports.getTvShows = async (req, res) => {
  ** @param {Object} res - The response object.
  ** @return {Promise<void>} A promise that resolves when the response is sent.
  */
-exports.getTvShow = async (req, res) => {
-  try {
-    const tvShow = await TvShow.findById(req.params.id);
-    res.status(200).json({ status: 'success', data: { tvShow } });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+
+exports.getTvShow = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['TV Shows']
+
+  const tvShow = await TvShow.findById(req.params.id);
+
+  if (!tvShow) {
+    return next(new AppErrorClass('No tv show found with that ID', 404));
   }
-};
+
+  res.status(200).json({ status: 'success', data: { tvShow } });
+});
 
 /**
  ** Creates a new TV show in the database and returns it as a JSON response.
@@ -53,14 +56,13 @@ exports.getTvShow = async (req, res) => {
  ** @param {Object} res - The response object.
  ** @return {Promise<void>} A promise that resolves when the response is sent.
  */
-exports.createTvShow = async (req, res) => {
-  try {
-    const tvShow = await TvShow.create(req.body);
-    res.status(201).json({ status: 'success', data: { tvShow } });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
+
+exports.createTvShow = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['TV Shows']
+
+  const tvShow = await TvShow.create(req.body);
+  res.status(201).json({ status: 'success', data: { tvShow } });
+});
 
 /**
  ** Updates a TV show in the database and returns it as a JSON response.
@@ -69,17 +71,21 @@ exports.createTvShow = async (req, res) => {
  ** @param {Object} res - The response object.
  ** @return {Promise<void>} A promise that resolves when the response is sent.
  */
-exports.updateTvShow = async (req, res) => {
-  try {
-    const tvShow = await TvShow.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
-    res.status(200).json({ status: 'success', data: { tvShow } });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+
+exports.updateTvShow = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['TV Shows']
+
+  const tvShow = await TvShow.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  if (!tvShow) {
+    return next(new AppErrorClass('No tv show found with that ID', 404));
   }
-};
+
+  res.status(200).json({ status: 'success', data: { tvShow } });
+});
 
 /**
  ** Deletes a TV show from the database and returns it as a JSON response.
@@ -88,14 +94,18 @@ exports.updateTvShow = async (req, res) => {
  ** @param {Object} res - The response object.
  ** @return {Promise<void>} A promise that resolves when the response is sent.
  */
-exports.deleteTvShow = async (req, res) => {
-  try {
-    const tvShow = await TvShow.findByIdAndDelete(req.params.id);
-    res.status(204).json({ message: 'Deleted successfully' });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+
+exports.deleteTvShow = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['TV Shows']
+
+  const tvShow = await TvShow.findByIdAndDelete(req.params.id);
+
+  if (!tvShow) {
+    return next(new AppErrorClass('No tv show found with that ID', 404));
   }
-};
+
+  res.status(204).json({ message: 'Deleted successfully' });
+});
 
 //* --------------AGGREGATION PIPELINE--------------------- //
 
@@ -107,28 +117,26 @@ exports.deleteTvShow = async (req, res) => {
  * * @param {*} res
  */
 
-exports.getTvShowStats = async (req, res) => {
-  try {
-    const stats = await TvShow.aggregate([
-      {
-        $match: { 'rating.average': { $gte: 6.5 } }
-      },
-      {
-        $group: {
-          _id: '$network.country.name',
-          averageRating: { $avg: '$rating.average' },
-          totalRating: { $sum: '$rating.count' },
-          maxRating: { $max: '$rating.average' },
-          minRating: { $min: '$rating.average' }
-        }
-      }
-    ]);
+exports.getTvShowStats = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['TV Shows']
 
-    res.status(200).json({ status: 'success', data: { stats } });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
+  const stats = await TvShow.aggregate([
+    {
+      $match: { 'rating.average': { $gte: 6.5 } }
+    },
+    {
+      $group: {
+        _id: '$network.country.name',
+        averageRating: { $avg: '$rating.average' },
+        totalRating: { $sum: '$rating.count' },
+        maxRating: { $max: '$rating.average' },
+        minRating: { $min: '$rating.average' }
+      }
+    }
+  ]);
+
+  res.status(200).json({ status: 'success', data: { stats } });
+});
 
 /**
  * * Getting all shows that have a status of running, and have
@@ -138,8 +146,10 @@ exports.getTvShowStats = async (req, res) => {
  * * @param {*} res
  */
 
-exports.getRunningFoxTvShows = async (req, res) => {
-  try {
+exports.getRunningFoxTvShows = appErrorHandler.catchAsync(
+  async (req, res, next) => {
+    // #swagger.tags = ['TV Shows']
+
     const runningTvShows = await TvShow.aggregate([
       {
         $match: {
@@ -174,7 +184,5 @@ exports.getRunningFoxTvShows = async (req, res) => {
     ]);
 
     res.status(200).json({ status: 'success', data: { runningTvShows } });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
   }
-};
+);
