@@ -1,5 +1,6 @@
 //* Defining business logic for tv-shows collections
 
+const { raw } = require('express');
 const TvShow = require('../models/tvShowModel');
 const QueryAPIFeatures = require('../utils/queryFeatures');
 //********************* CONTROLLERS ****************** */
@@ -124,6 +125,55 @@ exports.getTvShowStats = async (req, res) => {
     ]);
 
     res.status(200).json({ status: 'success', data: { stats } });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+/**
+ * * Getting all shows that have a status of running, and have
+ * * Drama in the genre array from the network FOX
+ *
+ * * @param {*} req
+ * * @param {*} res
+ */
+
+exports.getRunningFoxTvShows = async (req, res) => {
+  try {
+    const runningTvShows = await TvShow.aggregate([
+      {
+        $match: {
+          status: 'Running',
+          'network.name': 'FOX',
+          genres: 'Drama'
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          language: 1,
+          genres: 1,
+          officialSite: 1,
+          runtime: 1,
+          rating: 1
+        }
+      },
+      {
+        $group: {
+          _id: '$name',
+          language: { $first: '$language' },
+          genres: { $first: '$genres' },
+          officialSite: { $first: '$officialSite' },
+          avgRuntime: { $avg: '$runtime' },
+          maxRating: { $max: '$rating.average' }
+        }
+      },
+      {
+        $sort: { 'rating.average': 1 }
+      }
+    ]);
+
+    res.status(200).json({ status: 'success', data: { runningTvShows } });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
