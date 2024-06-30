@@ -16,7 +16,7 @@ const doc = {
     description: 'API for TV Shows'
   },
   host: 'localhost:8000',
-  schemes: ['http'],
+  schemes: ['https, http'],
   swagger: '2.0'
 };
 
