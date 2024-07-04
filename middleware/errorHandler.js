@@ -1,12 +1,19 @@
 //* Error handler middleware file
-const dotenv = require('dotenv');
-dotenv.config();
 const AppErrorClass = require('../utils/appErrorClass');
 
+//* handling Cast Errors
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppErrorClass(message, 400);
 };
+
+//* handling JWT Errors
+const handleJWTError = () =>
+  new AppErrorClass('Invalid token. Please log in again!', 401);
+
+//* handling Expired JWT Errors
+const handleJWTExpiredError = () =>
+  new AppErrorClass('Your token has expired. Please log in again!', 401);
 
 const errorHandlerDev = (err, res) => {
   res.status(err.statusCode).json({
@@ -33,7 +40,7 @@ const errorHandlerProd = (err, res) => {
       message: err.message
     });
   } else {
-    console.log('Error 😵‍💫', err);
+    // console.log('Error 😵‍💫', err);
 
     res.status(500).json({
       status: 'error',
@@ -52,6 +59,8 @@ exports.errorHandler = (err, req, res, next) => {
     let error = { ...err };
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
     errorHandlerProd(error, res);
   }
