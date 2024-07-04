@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const tvShowsController = require('../controllers/tvShowsController');
+const authController = require('../controllers/authController');
 
 //*************************** ROUTES ****************** */
 
@@ -16,7 +17,7 @@ router.route('/runningFoxTvShows').get(tvShowsController.getRunningFoxTvShows);
 
 router
   .route('/')
-  .get(tvShowsController.getTvShows)
+  .get(authController.isAuthorized, tvShowsController.getTvShows)
   .post(tvShowsController.createTvShow);
 
 router
