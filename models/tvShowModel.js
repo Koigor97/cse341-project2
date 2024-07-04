@@ -286,7 +286,6 @@ showSchema.pre('save', function (next) {
  *  */
 showSchema.pre('find', function (next) {
   this.find({}).sort('name');
-  console.log(this);
   next();
 });
 
