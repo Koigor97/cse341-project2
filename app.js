@@ -2,7 +2,6 @@
 
 // * Modules&Dependencies - bringing to scope for use in this file
 const express = require('express');
-const dotenv = require('dotenv').config();
 const cors = require('cors');
 const morgan = require('morgan');
 const swaggerUI = require('swagger-ui-express');
