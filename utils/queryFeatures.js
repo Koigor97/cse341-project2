@@ -21,9 +21,6 @@ class QueryAPIFeatures {
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
     excludeFields.forEach((el) => delete queryObj[el]);
 
-    console.log(`--------------OBJECT TO QUERY--------------------`);
-    console.log(`object to query:`, queryObj);
-
     // 1.b) ADVANCED FILTERING
     /**
      * * the code below returns a query promise. The query promise
@@ -44,7 +41,6 @@ class QueryAPIFeatures {
     // 2) SORTING
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
-      console.log(`sort by:`, sortBy);
       this.query = this.query.sort(sortBy);
     } else {
       this.query = this.query.sort('-updated');
@@ -56,9 +52,7 @@ class QueryAPIFeatures {
   limitFields() {
     // 3) FIELD LIMITING
     if (this.queryString.fields) {
-      console.log(`fields:`, this.queryString.fields);
       const fields = this.queryString.fields.split(',').join(' ');
-      console.log(`fields:`, fields);
       this.query = this.query.select(fields);
     } else {
       this.query = this.query.select('-__v');
