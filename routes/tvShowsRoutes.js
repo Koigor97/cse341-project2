@@ -17,14 +17,22 @@ router.route('/runningFoxTvShows').get(tvShowsController.getRunningFoxTvShows);
 
 router
   .route('/')
-  .get(authController.isAuthorized, tvShowsController.getTvShows)
-  .post(tvShowsController.createTvShow);
+  .get(authController.isAuthenticated, tvShowsController.getTvShows)
+  .post(authController.isAuthenticated, tvShowsController.createTvShow);
 
 router
   .route('/:id')
-  .get(tvShowsController.getTvShow)
-  .put(tvShowsController.updateTvShow)
-  .delete(tvShowsController.deleteTvShow);
+  .get(authController.isAuthenticated, tvShowsController.getTvShow)
+  .put(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    tvShowsController.updateTvShow
+  )
+  .delete(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    tvShowsController.deleteTvShow
+  );
 
 //*************************** EXPORTS ****************** */
 
