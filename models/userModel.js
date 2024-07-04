@@ -52,7 +52,15 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+//********************* METHODS ****************** */
+
+userSchema.methods.isPasswordMatched = async function (
+  loggedInPassword,
+  userPassword
+) {
+  return await bcrypt.compare(loggedInPassword, userPassword);
+};
 
 //********************* EXPORTS ****************** */
+const User = mongoose.model('User', userSchema);
 module.exports = User;
