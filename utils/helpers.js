@@ -19,10 +19,8 @@ function parseArrayString(value) {
     value.endsWith(']')
   ) {
     try {
-      console.log('Parsing array from query parameter:', value);
       return JSON.parse(value.trim()); //* value = ['Drama', 'Comedy', 'Action']
     } catch (error) {
-      console.error('Failed to parse array from query parameter:', error);
       return value; //* Return the original value if parsing fails
     }
   }
@@ -80,9 +78,6 @@ function processParams(params) {
  * * @returns {Object} - The MongoDB-compatible query object.
  */
 function convertQueryParams(queryParams) {
-  console.log(`-----------------QUERY PARAMS-----------------`);
-  console.log(`queryParams:`, queryParams);
-
   /**
    * * The code below uses regex matching to find specific query operators
    * * within a query string and converts them to MongoDB-compatible operators
@@ -115,13 +110,7 @@ function convertQueryParams(queryParams) {
 
   const mongoQuery = JSON.parse(queryStr);
 
-  console.log(`-----------------MONGO QUERY-----------------`);
-  console.log(mongoQuery);
-
   processParams(mongoQuery);
-
-  console.log(`---------------PROCESSED QUERY-----------------`);
-  console.log(mongoQuery);
 
   return mongoQuery;
 }
