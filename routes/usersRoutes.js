@@ -12,19 +12,50 @@ const authController = require('../controllers/authController');
  */
 
 //* authentication routes
+
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
+
+//---------------------------------------------------------//
+
+//* forgot password and reset password routes
+
+router.post('/forgotPassword', authController.forgotPassword);
+router.put('/resetPassword/:token', authController.resetPassword);
+router.put(
+  '/updatePassword',
+  authController.isAuthenticated,
+  authController.updatePassword
+);
+
+//---------------------------------------------------------//
+
+//* user resource routes
 
 router
   .route('/')
   .get(usersController.getUsers)
   .post(usersController.createUser);
 
+router.put(
+  '/updateMe',
+  authController.isAuthenticated,
+  usersController.updateMe
+);
+
+router.delete(
+  '/deleteMe',
+  authController.isAuthenticated,
+  usersController.deleteMe
+);
+
 router
   .route('/:id')
   .get(usersController.getUser)
   .put(usersController.updateUser)
   .delete(usersController.deleteUser);
+
+//---------------------------------------------------------//
 
 //*************************** EXPORTS ****************** */
 
