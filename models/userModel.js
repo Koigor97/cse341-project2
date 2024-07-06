@@ -128,12 +128,12 @@ module.exports = User;
 //     "password": "password123",
 //     "passwordConfirm": "password123"
 //   },
-//   {
-//     "name": "Jane Smith",
-//     "email": "janesmith@example.com",
-//     "password": "janesecurepassword",
-//     "passwordConfirm": "janesecurepassword"
-//   },
+// {
+//   "name": "Jane Smith",
+//   "email": "janesmith@example.com",
+//   "password": "janesecurepassword",
+//   "passwordConfirm": "janesecurepassword"
+// },
 //   {
 //     "name": "Alice Johnson",
 //     "email": "alicejohnson@example.com",
