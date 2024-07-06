@@ -4,6 +4,7 @@ const TvShow = require('../models/tvShowModel');
 const QueryAPIFeatures = require('../utils/queryFeatures');
 const appErrorHandler = require('../middleware/errorHandler');
 const AppErrorClass = require('../utils/appErrorClass');
+
 //********************* CONTROLLERS ****************** */
 
 /**
@@ -185,3 +186,36 @@ exports.getRunningFoxTvShows = appErrorHandler.catchAsync(
     res.status(200).json({ status: 'success', data: { runningTvShows } });
   }
 );
+
+// [
+//   {
+//     name: 'John Doe',
+//     email: 'johndoe@example.com',
+//     password: 'password123',
+//     passwordConfirm: 'password123'
+//   },
+//   {
+//     name: 'Jane Smith',
+//     email: 'janesmith@example.com',
+//     password: 'janesecurepassword',
+//     passwordConfirm: 'janesecurepassword'
+//   },
+//   {
+//     name: 'Alice Johnson',
+//     email: 'alicejohnson@example.com',
+//     password: 'alicepassword456',
+//     passwordConfirm: 'alicepassword456'
+//   },
+//   {
+//     name: 'Bob Brown',
+//     email: 'bobbrown@example.com',
+//     password: 'bobsecure789',
+//     passwordConfirm: 'bobsecure789'
+//   },
+//   {
+//     name: 'Charlie Green',
+//     email: 'charliegreen@example.com',
+//     password: 'charliepass012',
+//     passwordConfirm: 'charliepass012'
+//   }
+// ];
