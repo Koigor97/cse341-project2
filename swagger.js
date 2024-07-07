@@ -16,7 +16,7 @@ const doc = {
     description: 'API for TV Shows'
   },
   host: 'cse341-project2-l44o.onrender.com',
-  schemes: ['https, http'],
+  schemes: ['https', 'http'],
   swagger: '2.0'
 };
 
