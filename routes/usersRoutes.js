@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
 const authController = require('../controllers/authController');
+const passport = require('passport');
 
 //*************************** ROUTES ****************** */
 
@@ -13,8 +14,22 @@ const authController = require('../controllers/authController');
 
 //* authentication routes
 
+router.get(
+  '/loginWithGithub',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
+router.get(
+  '/auth',
+  passport.authenticate('github', {
+    session: false,
+    successRedirect: '/api-docs',
+    failureRedirect: '/login'
+  }),
+  authController.githubAuthCallback
+);
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
+router.get('/logout', authController.logout);
 
 //---------------------------------------------------------//
 
@@ -34,8 +49,16 @@ router.put(
 
 router
   .route('/')
-  .get(usersController.getUsers)
-  .post(usersController.createUser);
+  .get(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    usersController.getUsers
+  )
+  .post(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    usersController.createUser
+  );
 
 router.put(
   '/updateMe',
@@ -51,9 +74,21 @@ router.delete(
 
 router
   .route('/:id')
-  .get(usersController.getUser)
-  .put(usersController.updateUser)
-  .delete(usersController.deleteUser);
+  .get(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    usersController.getUser
+  )
+  .put(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    usersController.updateUser
+  )
+  .delete(
+    authController.isAuthenticated,
+    authController.isAuthorized,
+    usersController.deleteUser
+  );
 
 //---------------------------------------------------------//
 
