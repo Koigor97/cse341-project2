@@ -6,6 +6,11 @@ const crypto = require('crypto');
 //********************* SCHEMA ****************** */
 
 const userSchema = new mongoose.Schema({
+  githubId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -13,24 +18,49 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    sparse: true,
+    required: function () {
+      return !this.githubId;
+    },
     unique: true,
     trim: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email']
+    validate: {
+      validator: function (value) {
+        return this.githubId || validator.isEmail(value);
+      },
+      message: 'Please provide a valid email address'
+    }
   },
   password: {
     type: String,
-    required: [
-      true,
-      'Password is required. Password must be at least 8 characters long'
-    ],
-    minlength: 8,
+    required: function () {
+      return !this.githubId;
+    },
+    validate: {
+      validator: function (value) {
+        // Only validate password if not using GitHub OAuth
+        return (
+          this.githubId ||
+          validator.isStrongPassword(value, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1
+          })
+        );
+      },
+      message:
+        'Password must be strong and contain at least 8 characters, including uppercase, lowercase, numbers, and symbols'
+    },
     select: false
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'Please confirm your password. Passwords must match.'],
+    required: function () {
+      return this.password && !this.githubId;
+    },
     validate: {
       // This only works on CREATE and SAVE!!!
       validator: function (el) {
@@ -51,6 +81,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
+  },
+  image: {
+    type: String
   }
 });
 
