@@ -11,9 +11,11 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppErrorClass = require('./utils/appErrorClass');
 const appErrorHandler = require('./middleware/errorHandler');
+const passportConfig = require('./middleware/passportConfig');
 
 //* require the routes
 const tvShowsRoutes = require('./routes/tvShowsRoutes');
@@ -26,6 +28,9 @@ const app = express();
 
 //* security middleware for HTTP headers
 app.use(helmet());
+
+//* passport middleware for authentication
+app.use(passportConfig.initialize());
 
 const limiter = rateLimit({
   max: 500,
@@ -45,11 +50,37 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+//* list of allowed origins
+const allowedOrigins = [
+  'http://localhost:8000',
+  'https://cse341-project2-l44o.onrender.com'
+];
+
+//* cors options for allowed origins
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+};
+
 //? allows cross-origin resource sharing
-app.use(cors());
+app.use(cors(corsOptions));
+
+//? serves static files
+app.use(express.static(`${__dirname}/public`));
 
 //? parses incoming requests with JSON payloads
 app.use(express.json({ limit: '10kb' }));
+
+//? cookie parser middleware
+app.use(cookieParser());
 
 //? data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -63,9 +94,6 @@ app.use(
     whitelist: ['genres', 'runtime', 'rating', 'externals']
   })
 );
-
-//? serves static files
-app.use(express.static(`${__dirname}/public`));
 
 //? parses incoming requests with urlencoded payloads
 app.use(express.urlencoded({ extended: false }));
