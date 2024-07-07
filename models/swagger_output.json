@@ -133,7 +133,7 @@
     "/api/v1/users/": {
       "get": {
         "tags": ["User"],
-        "description": "",
+        "description": "Get all users. Only admins can access this route.",
         "responses": {
           "200": {
             "description": "OK"
@@ -145,10 +145,20 @@
       },
       "post": {
         "tags": ["User"],
-        "description": "",
+        "description": " Create a new user. Only admins can access this route.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "New user created"
           },
           "400": {
             "description": "Bad Request"
@@ -159,7 +169,7 @@
     "/api/v1/users/{id}": {
       "get": {
         "tags": ["User"],
-        "description": "",
+        "description": " Get a single user. Only admins can access this route.",
         "parameters": [
           {
             "name": "id",
@@ -170,7 +180,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "A user object"
           },
           "404": {
             "description": "Not Found"
@@ -179,18 +189,27 @@
       },
       "put": {
         "tags": ["User"],
-        "description": "",
+        "description": " Update a user by ID. Only admins can access this route.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": " User updated"
           },
           "404": {
             "description": "Not Found"
@@ -199,7 +218,7 @@
       },
       "delete": {
         "tags": ["User"],
-        "description": "",
+        "description": " Delete a user by ID. Only admins can access this route.",
         "parameters": [
           {
             "name": "id",
@@ -209,11 +228,112 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "204": {
+            "description": " User deleted"
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/users/signup": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Sign up a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User signed up"
+          }
+        }
+      }
+    },
+    "/api/v1/users/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Login a user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged in"
+          }
+        }
+      }
+    },
+    "/api/v1/users/logout": {
+      "get": {
+        "tags": ["Authentication"],
+        "description": "Logout a user",
+        "responses": {
+          "200": {
+            "description": "User logged out"
+          }
+        }
+      }
+    },
+    "/api/v1/users/forgotPassword": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Send a password reset email",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ForgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password reset email sent"
+          }
+        }
+      }
+    },
+    "/api/v1/users/resetPassword/{token}": {
+      "put": {
+        "tags": ["Authentication"],
+        "description": "Reset the password using the token",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password reset successfully"
           }
         }
       }
@@ -342,6 +462,43 @@
         "updated",
         "_links"
       ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "password": { "type": "string" },
+        "passwordConfirm": { "type": "string" },
+        "role": {
+          "type": "string",
+          "enum": ["user", "admin"]
+        }
+      },
+      "required": ["name", "email", "password", "passwordConfirm"]
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "password": { "type": "string" }
+      },
+      "required": ["email", "password"]
+    },
+    "ForgotPassword": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "ResetPassword": {
+      "type": "object",
+      "properties": {
+        "password": { "type": "string" },
+        "passwordConfirm": { "type": "string" }
+      },
+      "required": ["password", "passwordConfirm"]
     }
   }
 }
