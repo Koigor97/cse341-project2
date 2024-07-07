@@ -36,6 +36,15 @@ const createAndSendToken = (user, statusCode, res) => {
 
 //* --------------------- AUTH CONTROLLERS --------------------- */
 
+exports.githubAuthCallback = appErrorHandler.catchAsync(
+  async (req, res, next) => {
+    //* User authenticated via GitHub
+
+    const user = req.user;
+    createAndSendToken(user, 200, res);
+  }
+);
+
 /**
  * * Registers a new user in the database and sends a JSON response with a token.
  *
@@ -47,6 +56,8 @@ const createAndSendToken = (user, statusCode, res) => {
  */
 
 exports.signup = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Authentication']
+
   const user = {
     name: req.body.name,
     email: req.body.email,
@@ -70,6 +81,8 @@ exports.signup = appErrorHandler.catchAsync(async (req, res, next) => {
  */
 
 exports.login = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Authentication']
+
   // TODO 1: check if email and password exist
 
   const { email, password } = req.body;
@@ -90,6 +103,25 @@ exports.login = appErrorHandler.catchAsync(async (req, res, next) => {
   createAndSendToken(user, 200, res);
 });
 
+/**
+ * * Logs out a user by deleting the token.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function in the stack.
+ * @returns {Promise<void>} A promise that resolves when the response is sent.
+ */
+
+exports.logout = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Authentication']
+
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+  res.status(200).json({ status: 'success' });
+});
+
 //********************* AUTHORIZATION MIDDLEWARE ********************/
 
 /**
@@ -107,7 +139,9 @@ exports.isAuthenticated = appErrorHandler.catchAsync(async (req, res, next) => {
   // TODO 1: Get token and check if it exists
 
   let token;
-  if (
+  if (req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
@@ -189,6 +223,8 @@ exports.isAuthorized = appErrorHandler.catchAsync(async (req, res, next) => {
  */
 
 exports.forgotPassword = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Authentication']
+
   // TODO 1: Get user email and check if it exists
 
   const user = await User.findOne({ email: req.body.email });
@@ -246,6 +282,8 @@ exports.forgotPassword = appErrorHandler.catchAsync(async (req, res, next) => {
  */
 
 exports.resetPassword = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Authentication']
+
   // TODO 1: Get user based on token
 
   const hashedToken = crypto
@@ -286,6 +324,8 @@ exports.resetPassword = appErrorHandler.catchAsync(async (req, res, next) => {
  */
 
 exports.updatePassword = appErrorHandler.catchAsync(async (req, res, next) => {
+  // #swagger.tags = ['Users']
+
   // TODO 1: Get user from collection
 
   const user = await User.findOne({ email: req.user.email }).select(
@@ -315,3 +355,12 @@ exports.updatePassword = appErrorHandler.catchAsync(async (req, res, next) => {
 
   createAndSendToken(user, 200, res);
 });
+
+/**
+ * * Login strategy using Password with GitHub Strategy.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function in the stack.
+ * @returns {Promise<void>} A promise that resolves when the response is sent.
+ */
