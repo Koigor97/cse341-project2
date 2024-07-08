@@ -24,13 +24,17 @@ block content
           span#pwd-desc
         button.form-button(type="submit") Login
       .social-login
-        p Or login with
+        a(href="#" class="forget-password") Forgot password?
+        div#divider 
+          div 
+          span#divider-text or 
+          div
         .social-buttons
-          a(href="/auth/github" class="social-button github-button")
+          a(href="/auth" class="social-button github-button")
             i.fab.fa-github
-            | Login with GitHub
+            | GitHub
           a(href="/auth/google" class="social-button google-button")
             i.fab.fa-google
-            | Login with Google
+            | Google
       p.form-footer Don't have an account? 
         a(href="/signup") Sign up here
