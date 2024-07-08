@@ -14,18 +14,27 @@ router.get('/login', authController.renderLogin);
 
 router.get('/signup', authController.renderSignup);
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.get('/logout', authController.logout);
+router.post('/signup', authController.signup, (req, res) => {
+  res.redirect('/login');
+});
+router.post('/login', authController.login, (req, res) => {
+  res.redirect('/api-docs');
+});
+router.get('/logout', authController.logout, (req, res) => {
+  res.redirect('/');
+});
 
 router.get(
-  '/auth/github',
+  '/loginWithGithub',
   passport.authenticate('github', { scope: ['user:email'] })
 );
-
 router.get(
-  '/auth/github/callback',
-  passport.authenticate('github', { session: false }),
+  '/auth',
+  passport.authenticate('github', {
+    session: false,
+    successRedirect: 'https://cse341-project2-l44o.onrender.com/api-docs',
+    failureRedirect: '/login'
+  }),
   authController.githubAuthCallback
 );
 
