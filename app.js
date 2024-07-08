@@ -36,6 +36,9 @@ app.set('view engine', 'pug');
 //* security middleware for HTTP headers
 app.use(helmet());
 
+//* passport middleware for session
+// app.use(passportConfig.session());
+
 //* passport middleware for authentication
 app.use(passportConfig.initialize());
 
