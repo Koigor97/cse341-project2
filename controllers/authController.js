@@ -31,7 +31,7 @@ const createAndSendToken = (user, statusCode, res) => {
   // Remove password from output
   user.password = undefined;
 
-  res.status(statusCode).json({ status: 'success', token, data: { user } });
+  // res.status(statusCode).json({ status: 'success', token, data: { user } });
 };
 
 //* --------------------- AUTH CONTROLLERS --------------------- */
