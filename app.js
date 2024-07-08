@@ -2,6 +2,7 @@
 
 // * Modules&Dependencies - bringing to scope for use in this file
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const swaggerUI = require('swagger-ui-express');
@@ -20,11 +21,17 @@ const passportConfig = require('./middleware/passportConfig');
 //* require the routes
 const tvShowsRoutes = require('./routes/tvShowsRoutes');
 const usersRoutes = require('./routes/usersRoutes');
+const authRoutes = require('./routes/authRoute');
 
 // *************************** GLOBALS ****************** */
 
 //* instantiate express app
 const app = express();
+
+// ************************* VIEW ENGINE ***************** */
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 //* security middleware for HTTP headers
 app.use(helmet());
@@ -84,8 +91,14 @@ app.use(express.urlencoded({ extended: false }));
  * * Routes - defining api routes
  */
 
+app.use('/', authRoutes);
 app.use('/api/v1/tv-shows', tvShowsRoutes);
 app.use('/api/v1/users', usersRoutes);
+
+// home route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'home.html'));
+});
 
 //*************************** SWAGGER ****************** */
 const swaggerOptions = {
