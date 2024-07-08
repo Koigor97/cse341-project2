@@ -1,20 +1,5 @@
 header
-  span cse341-Digitals
-
-  nav
-    a(href='/', class='nav-link') Home
-
-    div 
-        ul
-        if user
-            li(class='nav-item')
-            if user.image
-                img(src=user.image, alt='User Image', class='user-image')
-            else
-                a(href='/profile', class='nav-link')= user.name
-            li(class='nav-item'): a(href='/logout') Logout
-        else
-            li(class='nav-item'): a(href='/login') Login
+  
             
 
 
