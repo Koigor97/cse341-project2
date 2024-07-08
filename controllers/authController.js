@@ -45,6 +45,14 @@ exports.githubAuthCallback = appErrorHandler.catchAsync(
   }
 );
 
+exports.renderLogin = (req, res) => {
+  res.render('login');
+};
+
+exports.renderSignup = (req, res) => {
+  res.render('signup');
+};
+
 /**
  * * Registers a new user in the database and sends a JSON response with a token.
  *
