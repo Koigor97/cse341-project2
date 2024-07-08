@@ -1,20 +1,56 @@
 extends layout
 
 block content
-  h1(class='title') Signup
-  form(action='/signup', method='POST', class='form')
-    div(class='form-group')
-      label(for='name', class='form-label') Name
-      input(type='text', name='name', required, class='form-input')
-    div(class='form-group')
-      label(for='email', class='form-label') Email
-      input(type='email', name='email', required, class='form-input')
-    div(class='form-group')
-      label(for='password', class='form-label') Password
-      input(type='password', name='password', required, class='form-input')
-    div(class='form-group')
-      label(for='passwordConfirm', class='form-label') Confirm Password
-      input(type='password', name='passwordConfirm', required, class='form-input')
-    div(class='form-group')
-      button(type='submit', class='form-button') Signup
-  a(href='/auth/github', class='github-signup') Signup with GitHub
+  .center-container
+    .form-container
+      .form-header
+        h2 Sign Up
+      form(method="POST", action="/signup")
+        .form-group
+          label(for="name") Name:
+          .input-icon
+            i.fas.fa-user
+            input(type="text", name="name", required placeholder="Enter your name")
+        .form-group
+          label(for="email") Email:
+          .input-icon
+            i.fas.fa-envelope
+            input(type="email", name="email", required placeholder="Enter your email")
+        .form-group
+          label(for="password") Password:
+          .input-icon
+            i.fas.fa-lock
+            input(type="password", name="password" required placeholder="Enter your password" id="password")
+            i.fas.fa-eye.toggle-password.eye-icon(onclick="togglePasswordVisibility()")
+          .password-strength
+        div#pass-meter
+          span#meter-outer
+            span#meter-inner
+          span#pwd-desc
+            
+        .form-group
+          label(for="passwordConfirm") Confirm Password:
+          .input-icon
+            i.fas.fa-lock
+            input(type="password", name="passwordConfirm" required placeholder="Confirm your password" id="password")
+            i.fas.fa-eye.toggle-password.eye-icon(onclick="togglePasswordVisibility()")
+        div#pass-meter
+          span#meter-outer
+            span#meter-inner
+          span#pwd-desc
+        button.form-button(type="submit") Sign Up
+      .social-login
+        a(href="#") Forgot password?
+        div#divider 
+          div 
+          span#divider-text or 
+          div
+        .social-buttons
+          a(href="/auth/github" class="social-button github-button")
+            i.fab.fa-github
+            | GitHub
+          a(href="/auth/google" class="social-button google-button")
+            i.fab.fa-google
+            | Google
+      p.form-footer Already have an account? 
+        a(href="/login") Login here
