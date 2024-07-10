@@ -61,6 +61,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //? allows cross-origin resource sharing
+
 app.use(cors());
 
 //? serves static files
@@ -100,7 +101,7 @@ app.use('/api/v1/users', usersRoutes);
 
 // home route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'home.html'));
+  res.render('home');
 });
 
 //*************************** SWAGGER ****************** */
