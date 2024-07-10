@@ -32,7 +32,6 @@ router.get(
   '/auth',
   passport.authenticate('github', {
     session: false,
-    successRedirect: 'https://cse341-project2-l44o.onrender.com/api-docs',
     failureRedirect: '/login'
   }),
   authController.githubAuthCallback
