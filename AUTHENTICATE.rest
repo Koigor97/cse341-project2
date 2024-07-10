@@ -1,0 +1,54 @@
+### 
+//Sign Up
+
+POST https://cse341-project2-l44o.onrender.com/signup
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Sign Up User",
+  "email": "signupuser@example.com",
+  "password": "password123",
+  "passwordConfirm": "password123"
+}
+
+### 
+//Login
+
+POST https://cse341-project2-l44o.onrender.com/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "sabinus@example.com",
+  "password": "z5RLgJaLV86kC!y"
+}
+
+### 
+//Logout
+
+GET https://cse341-project2-l44o.onrender.com/logout
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Forgot Password
+
+POST https://cse341-project2-l44o.onrender.com/forgotPassword
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "signupuser@example.com"
+}
+
+### 
+//Reset Password
+PUT https://cse341-project2-l44o.onrender.com/resetPassword/:token
+Content-Type: application/json
+Accept: application/json
+
+{
+  "password": "newpassword123",
+  "passwordConfirm": "newpassword123"
+}
