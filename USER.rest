@@ -1,0 +1,45 @@
+### 
+//Get all Users
+GET https://cse341-project2-l44o.onrender.com/api/v1/users
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Get Single User by ID
+GET https://cse341-project2-l44o.onrender.com/api/v1/users/668e9edef9a978a72bfaf95a
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Create a New User
+POST https://cse341-project2-l44o.onrender.com/api/v1/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "New User",
+  "email": "newuser@example.com",
+  "password": "password123",
+  "passwordConfirm": "password123",
+  "role": "user"
+}
+
+### 
+//Update a User by ID
+PUT https://cse341-project2-l44o.onrender.com/api/v1/users/668e9af3e921081a54d4af0c
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated User",
+  "email": "updateduser@example.com",
+  "password": "newpassword123",
+  "passwordConfirm": "newpassword123",
+  "role": "admin"
+}
+
+### 
+//Delete a User by ID
+DELETE https://cse341-project2-l44o.onrender.com/api/v1/users/668e9af3e921081a54d4af0c
+Content-Type: application/json
+Accept: application/json
