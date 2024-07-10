@@ -1,6 +1,29 @@
-header
-  
-            
+header#header
+  .navbar-title
+    h3.title-first-name CSE341
+    h3.title-last-name TvShows API
 
-
-//- li(class='nav-item'): a(href='/signup', class='nav-link') Signup
+  nav
+    ul.page-links
+      li
+        span 🏠
+        a(href="/") &lt; Home &gt;
+      li
+        span 👋
+        a(href="#about" target="_blank") &lt; About &gt;
+      li
+        span 📖
+        a(href="/api-docs") &lt; API Docs &gt;
+      if user
+        li
+          span
+          | Welcome, #{user.name}
+        li
+          span 🔑
+          a(href="/logout") Log Out
+      else
+        li.login
+          span 🔑
+          a(href="/login") Log In
+    .hamburger
+      i.fas.fa-bars
