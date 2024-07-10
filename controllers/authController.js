@@ -41,6 +41,10 @@ exports.githubAuthCallback = appErrorHandler.catchAsync(
     //* User authenticated via GitHub
 
     const user = req.user;
+
+    console.log('-----------------------Github-----------------------');
+    console.log(user);
+
     createAndSendToken(user, 200, res);
   }
 );
@@ -74,8 +78,13 @@ exports.signup = appErrorHandler.catchAsync(async (req, res, next) => {
     role: req.body.role
   };
 
+  console.log('-----------------------Signup-----------------------');
+  console.log(user);
+
   const newUser = await User.create(user);
   createAndSendToken(newUser, 201, res);
+
+  next();
 });
 
 /**
@@ -103,12 +112,17 @@ exports.login = appErrorHandler.catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ email }).select('+password');
 
+  console.log('-----------------------Login-----------------------');
+  console.log(user);
+
   if (!user || !(await user.isPasswordMatched(password, user.password))) {
     return next(new AppErrorClass('Incorrect email or password', 401));
   }
 
   // TODO 3: if everything ok, send token to client`s side
   createAndSendToken(user, 200, res);
+
+  next();
 });
 
 /**
@@ -127,7 +141,8 @@ exports.logout = appErrorHandler.catchAsync(async (req, res, next) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
   });
-  res.status(200).json({ status: 'success' });
+  // res.status(200).json({ status: 'success' });
+  next();
 });
 
 //********************* AUTHORIZATION MIDDLEWARE ********************/
