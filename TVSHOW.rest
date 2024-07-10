@@ -2,108 +2,143 @@
 
 // Get all TV Shows
 
-GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows HTTP/1.1
-
-###
-
-// Adding a new tv show 
-
-POST https://cse341-project2-l44o.onrender.com/api/v1/tv-shows HTTP/1.1
+### 
+GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows
 Content-Type: application/json
+Accept: application/json
+
+### 
+//
+//Get TV Shows Stats
+GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/stats
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Get Running Fox TV Shows
+GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/runningFoxTvShows
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Get Single TV Show by ID
+GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d66d
+Content-Type: application/json
+Accept: application/json
+
+### 
+//Create a New TV Show
+POST https://cse341-project2-l44o.onrender.com/api/v1/tv-shows
+Content-Type: application/json
+Accept: application/json
 
 {
-
-    "url": "http://www.tvmaze.com/shows/60/ncis",
-    "name": "NCIS",
-    "type": "Scripted",
-    "language": "English",
-    "genres": ["Drama", "Action", "Crime"],
-    "status": "Running",
-    "runtime": 60,
-    "premiered": "2003-09-23",
-    "officialSite": "http://www.cbs.com/shows/ncis/",
-    "schedule": { "time": "20:00", "days": ["Tuesday"] },
-    "rating": { "average": 8.5 },
-    "weight": 99,
-    "network": {
-      "id": 2,
-      "name": "CBS",
-      "country": {
-        "name": "United States",
-        "code": "US",
-        "timezone": "America/New_York"
-      }
+  "url": "http://example.com",
+  "name": "Example Show",
+  "type": "Scripted",
+  "language": "English",
+  "genres": ["Drama"],
+  "status": "Running",
+  "runtime": 60,
+  "premiered": "2024-01-01",
+  "officialSite": "http://example.com",
+  "schedule": {
+    "time": "21:00",
+    "days": ["Monday"]
+  },
+  "rating": {
+    "average": 7.5
+  },
+  "weight": 100,
+  "network": {
+    "id": 1,
+    "name": "Example Network",
+    "country": {
+      "name": "United States",
+      "code": "US",
+      "timezone": "America/New_York"
+    }
+  },
+  "externals": {
+    "tvrage": 12345,
+    "thetvdb": 67890,
+    "imdb": "tt1234567"
+  },
+  "image": {
+    "medium": "http://example.com/medium.jpg",
+    "original": "http://example.com/original.jpg"
+  },
+  "summary": "This is an example show.",
+  "updated": 1620000000,
+  "_links": {
+    "self": {
+      "href": "http://example.com/shows/1"
     },
-    "webChannel": null,
-    "externals": { "tvrage": 4628, "thetvdb": 72108, "imdb": "tt0364845" },
-    "image": {
-      "medium": "http://static.tvmaze.com/uploads/images/medium_portrait/141/353883.jpg",
-      "original": "http://static.tvmaze.com/uploads/images/original_untouched/141/353883.jpg"
-    },
-    "summary": "<p><b>NCIS</b> (Naval Criminal Investigative Service) is more than just an action drama. With liberal doses of humor, it's a show that focuses on the sometimes complex and always amusing dynamics of a team forced to work together in high-stress situations. Leroy Jethro Gibbs, a former Marine gunnery sergeant, whose skills as an investigator are unmatched, leads this troupe of colorful personalities. Rounding out the team are Anthony DiNozzo, an ex-homicide detective whose instincts in the field are unparalleled and whose quick wit and humorous take on life make him a team favorite; the youthful and energetic forensic specialist Abby Sciuto, a talented scientist whose sharp mind matches her Goth style and eclectic tastes; Caitlin Todd, an ex-Secret Service Agent; and Timothy McGee, an MIT graduate whose brilliance with computers far overshadows his insecurities in the field; Assisting the team is medical examiner Dr. Donald \"Ducky\" Mallard, who knows it all because he's seen it all, and he's not afraid to let you know. From murder and espionage to terrorism and stolen submarines, these special agents travel the globe to investigate all crimes with Navy or Marine Corps ties.</p>",
-    "updated": 1535162204,
-    "_links": {
-      "self": { "href": "http://api.tvmaze.com/shows/60" },
-      "previousepisode": { "href": "http://api.tvmaze.com/episodes/1432093" },
-      "nextepisode": { "href": "http://api.tvmaze.com/episodes/1494016" }
+    "previousepisode": {
+      "href": "http://example.com/episodes/1"
     }
   }
-
-###
-
-// Getting a single tv show
-
-GET https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d66d HTTP/1.1
-
-###
-
-// Updating a specific tv show
-
-PUT https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d66d HTTP/1.1
-Content-Type: application/json
-
-{
-    "url": "http://www.tvmaze.com/shows/67/greys-anatomy",
-    "name": "Grey's Anatomy",
-    "type": "Scripted",
-    "language": "English",
-    "genres": ["Drama", "Romance", "Medical"],
-    "status": "Running",
-    "runtime": 60,
-    "premiered": "2005-03-27",
-    "officialSite": "http://abc.go.com/shows/greys-anatomy/",
-    "schedule": { "time": "20:00", "days": ["Thursday"] },
-    "rating": { "average": 8.3 },
-    "weight": 98,
-    "network": {
-      "id": 3,
-      "name": "ABC",
-      "country": {
-        "name": "United States",
-        "code": "US",
-        "timezone": "America/New_York"
-      }
-    },
-    "webChannel": null,
-    "externals": { "tvrage": 3741, "thetvdb": 73762, "imdb": "tt0413573" },
-    "image": {
-      "medium": "http://static.tvmaze.com/uploads/images/medium_portrait/125/314760.jpg",
-      "original": "http://static.tvmaze.com/uploads/images/original_untouched/125/314760.jpg"
-    },
-    "summary": "<p>The doctors of Grey Sloan Memorial Hospital deal with life-or-death consequences on a daily basis -- it's in one another that they find comfort, friendship and, at times, more than friendship. Together they're discovering that neither medicine nor relationships can be defined in black and white. Real life only comes in shades of grey.</p>",
-    "updated": 1536481746,
-    "_links": {
-      "self": { "href": "http://api.tvmaze.com/shows/67" },
-      "previousepisode": { "href": "http://api.tvmaze.com/episodes/1446166" },
-      "nextepisode": { "href": "http://api.tvmaze.com/episodes/1501083" }
-    }
 }
 
-###
+### 
+//Update a TV Show by ID
+PUT https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d655
+Content-Type: application/json
+Accept: application/json
 
-// Deleting a specific tv show 
+{
+  "url": "http://example.com",
+  "name": "Updated Show",
+  "type": "Scripted",
+  "language": "English",
+  "genres": ["Drama"],
+  "status": "Running",
+  "runtime": 60,
+  "premiered": "2024-01-01",
+  "officialSite": "http://example.com",
+  "schedule": {
+    "time": "21:00",
+    "days": ["Monday"]
+  },
+  "rating": {
+    "average": 8.0
+  },
+  "weight": 100,
+  "network": {
+    "id": 1,
+    "name": "Example Network",
+    "country": {
+      "name": "United States",
+      "code": "US",
+      "timezone": "America/New_York"
+    }
+  },
+  "externals": {
+    "tvrage": 12345,
+    "thetvdb": 67890,
+    "imdb": "tt1234567"
+  },
+  "image": {
+    "medium": "http://example.com/medium.jpg",
+    "original": "http://example.com/original.jpg"
+  },
+  "summary": "This is an updated show.",
+  "updated": 1620000000,
+  "_links": {
+    "self": {
+      "href": "http://example.com/shows/1"
+    },
+    "previousepisode": {
+      "href": "http://example.com/episodes/1"
+    }
+  }
+}
 
-DELETE https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d66d HTTP/1.1
+### 
+//Delete a TV Show by ID
+DELETE https://cse341-project2-l44o.onrender.com/api/v1/tv-shows/667c45dc7451548211a1d655
+Content-Type: application/json
+Accept: application/json
 
 ###
 
