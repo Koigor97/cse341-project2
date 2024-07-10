@@ -237,7 +237,7 @@
         }
       }
     },
-    "/api/v1/users/signup": {
+    "/signup": {
       "post": {
         "tags": ["Authentication"],
         "description": "Sign up a new user",
@@ -258,7 +258,7 @@
         }
       }
     },
-    "/api/v1/users/login": {
+    "/login": {
       "post": {
         "tags": ["Authentication"],
         "description": "Login a user",
@@ -279,7 +279,7 @@
         }
       }
     },
-    "/api/v1/users/logout": {
+    "/logout": {
       "get": {
         "tags": ["Authentication"],
         "description": "Logout a user",
@@ -290,7 +290,7 @@
         }
       }
     },
-    "/api/v1/users/forgotPassword": {
+    "/forgotPassword": {
       "post": {
         "tags": ["Authentication"],
         "description": "Send a password reset email",
@@ -311,7 +311,7 @@
         }
       }
     },
-    "/api/v1/users/resetPassword/{token}": {
+    "/resetPassword/{token}": {
       "put": {
         "tags": ["Authentication"],
         "description": "Reset the password using the token",
