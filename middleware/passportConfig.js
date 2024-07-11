@@ -13,7 +13,7 @@ passport.use(
       try {
         // Find or create a user based on their GitHub profile
         let user = await User.findOne({ githubId: profile.id });
-        console.log(profile);
+        // console.log(profile);
 
         if (!user) {
           user = await User.create({
