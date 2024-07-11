@@ -46,6 +46,7 @@ exports.githubAuthCallback = appErrorHandler.catchAsync(
     console.log(user);
 
     createAndSendToken(user, 200, res);
+    res.redirect('/api-docs');
   }
 );
 
