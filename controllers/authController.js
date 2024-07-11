@@ -83,6 +83,7 @@ exports.signup = appErrorHandler.catchAsync(async (req, res, next) => {
   console.log(user);
 
   const newUser = await User.create(user);
+  console.log('newUser', newUser);
   createAndSendToken(newUser, 201, res);
 
   next();
