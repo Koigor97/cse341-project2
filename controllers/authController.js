@@ -9,6 +9,7 @@ const AppErrorClass = require('../utils/appErrorClass');
 const sendEmail = require('../utils/email');
 
 const signToken = (id) => {
+  console.log('the signtoken function is running');
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
   });
@@ -23,8 +24,15 @@ const createAndSendToken = (user, statusCode, res) => {
     ),
     httpOnly: true
   };
-
+  console.log(
+    'in the createAndSendToken --if we check the cookie options',
+    cookieOptions
+  );
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  console.log(
+    'in the createAndSendToken --if we check the cookie options secure was set',
+    cookieOptions
+  );
 
   res.cookie('jwt', token, cookieOptions);
 
