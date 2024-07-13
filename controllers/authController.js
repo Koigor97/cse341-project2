@@ -58,6 +58,17 @@ exports.githubAuthCallback = appErrorHandler.catchAsync(
   }
 );
 
+exports.googleAuthCallback = appErrorHandler.catchAsync(
+  async (req, res, next) => {
+    const user = req.user;
+    console.log('-----------------------Google-----------------------');
+    console.log(user);
+
+    createAndSendToken(user, 200, res);
+    res.redirect('/api-docs');
+  }
+);
+
 exports.renderLogin = (req, res) => {
   res.render('login');
 };
