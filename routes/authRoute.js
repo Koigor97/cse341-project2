@@ -23,7 +23,7 @@ router.post('/login', authController.login, (req, res) => {
   res.redirect('/api-docs');
 });
 router.get('/logout', authController.logout, (req, res) => {
-  res.redirect('/');
+  res.status(200).json({ status: 'success', message: 'Logged out' });
 });
 
 //* github authentication routes
