@@ -10,10 +10,12 @@ const passport = require('passport');
  * * function to define and chain route handlers
  */
 
-router.get('/login', authController.renderLogin);
+//* authentication pages routes
 
+router.get('/login', authController.renderLogin);
 router.get('/signup', authController.renderSignup);
 
+//* authentication routes
 router.post('/signup', authController.signup, (req, res) => {
   res.redirect('/login');
 });
@@ -24,6 +26,7 @@ router.get('/logout', authController.logout, (req, res) => {
   res.redirect('/');
 });
 
+//* github authentication routes
 router.get(
   '/loginWithGithub',
   passport.authenticate('github', { scope: ['user:email'] })
@@ -37,7 +40,21 @@ router.get(
   authController.githubAuthCallback
 );
 
-// forgot password and reset password routes
+//* google authentication routes
+router.get(
+  '/loginWithGoogle',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: '/login'
+  }),
+  authController.googleAuthCallback
+);
+
+//* forgot password and reset password routes
 
 router.post('/forgotPassword', authController.forgotPassword);
 router.put('/resetPassword/:token', authController.resetPassword);
