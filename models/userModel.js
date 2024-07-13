@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true
   },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -20,14 +25,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     sparse: true,
     required: function () {
-      return !this.githubId;
+      return !this.githubId && !this.googleId;
     },
     unique: true,
     trim: true,
     lowercase: true,
     validate: {
       validator: function (value) {
-        return this.githubId || validator.isEmail(value);
+        return this.githubId || this.googleId || validator.isEmail(value);
       },
       message: 'Please provide a valid email address'
     }
@@ -35,13 +40,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function () {
-      return !this.githubId;
+      return !this.githubId && !this.googleId;
     },
     validate: {
       validator: function (value) {
         // Only validate password if not using GitHub OAuth
         return (
           this.githubId ||
+          this.googleId ||
           validator.isStrongPassword(value, {
             minLength: 8,
             minLowercase: 1,
@@ -59,7 +65,7 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     required: function () {
-      return this.password && !this.githubId;
+      return this.password && !this.githubId && !this.googleId;
     },
     validate: {
       // This only works on CREATE and SAVE!!!
