@@ -99,9 +99,14 @@ app.use('/', authRoutes);
 app.use('/api/v1/tv-shows', tvShowsRoutes);
 app.use('/api/v1/users', usersRoutes);
 
-// home route
+// home page route
 app.get('/', (req, res) => {
-  res.render('home');
+  res.render('index');
+});
+
+// explore page route
+app.get('/explore', (req, res) => {
+  res.render('pages/explore');
 });
 
 //*************************** SWAGGER ****************** */
