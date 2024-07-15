@@ -70,11 +70,11 @@ exports.googleAuthCallback = appErrorHandler.catchAsync(
 );
 
 exports.renderLogin = (req, res) => {
-  res.render('login');
+  res.render('pages/login');
 };
 
 exports.renderSignup = (req, res) => {
-  res.render('signup');
+  res.render('pages/signup');
 };
 
 /**
