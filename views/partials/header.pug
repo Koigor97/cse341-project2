@@ -10,20 +10,12 @@ header#header
         a(href="/") Home
       li
         span 👋
-        a(href="#about" target="_blank") Explore 
+        a(href="/explore") Explore 
       li
         span 📖
         a(href="/api-docs") API Docs 
-      if user
-        li
-          span
-          | Welcome, #{user.name}
-        li
-          span 🔑
-          a(href="/logout") Log Out
-      else
-        li.login
-          span 🔑
-          a(href="/login") Log In
+      li.login
+        span 🔑
+        a(href="/login") Log In
     .hamburger
       i.fas.fa-bars
