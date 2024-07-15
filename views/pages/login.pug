@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+  .center-container
+    .form-container
+      .form-header
+        h2 Login
+      form(method="POST", action="/login")
+        .form-group
+          label(for="email") Email:
+          .input-icon
+            i.fas.fa-envelope
+            input(type="email", name="email", required placeholder="Enter your email")
+        .form-group
+          label(for="password") Password:
+          .input-icon
+            i.fas.fa-lock
+            input(type="password", name="password" required placeholder="Enter your password")
+            i.fas.fa-eye.toggle-password(onclick="togglePasswordVisibility()")
+          .password-strength
+        div#pass-meter
+          span#meter-outer
+            span#meter-inner
+          span#pwd-desc
+        button.form-button(type="submit") Login
+      .social-login
+        a(href="#" class="forget-password") Forgot password?
+        div#divider 
+          div 
+          span#divider-text or 
+          div
+        .social-buttons
+          a(href="/loginWithGithub" class="social-button github-button")
+            i.fab.fa-github
+            | GitHub
+          a(href="/loginWithGoogle" class="social-button google-button")
+            i.fab.fa-google
+            | Google
+      p.form-footer Don't have an account? 
+        a(href="/signup") Sign up here
