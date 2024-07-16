@@ -1,4 +1,31 @@
 extends ../layout
 
 block content 
-    
+  main#explore 
+    .explore-summary 
+        h2 Explore TV Shows 
+        p Welcome to our TV Show Explorer! This page gives you a glimpse of what our API can offer. Here, you will find a curated list of TV shows with detailed information about each show. Click on any show to learn more about its genres, ratings, schedule, and more. Dive in and discover your next favorite show!
+
+    .tvShow-list-container 
+        each show in shows
+            .tv-show-card
+                .img-box
+                    img(src=show.image.medium alt=show.name width=210 height=295 loading=lazy)
+                h3= show.name
+                .info
+                    p 
+                        span Genres: 
+                        | #{show.genres.join(', ')}
+                    p 
+                        span Rating: 
+                        | #{show.rating.average}
+                    p 
+                        span Status: 
+                        | #{show.status}
+                    p 
+                        span Premiered: 
+                        | #{new Date(show.premiered).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    p 
+                        span Network: 
+                        | #{show.network.name}, #{show.network.country.name}
+                a(href=`/tv-show/${show.id}`) View Details
