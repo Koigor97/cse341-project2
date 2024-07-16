@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+  main#tv-show-detail-container
+    .tv-show-image
+      img(src=tvShow.image.original alt=tvShow.name)
+    .tv-show-info
+        h1 #{tvShow.name}
+        .tv-show-meta
+            span.rating #{tvShow.rating.average}
+            span.status #{tvShow.status}
+            span.premiered #{new Date(tvShow.premiered).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            span.network #{tvShow.network.name}, #{tvShow.network.country.name}
+      
+    
+        .tv-show-genres
+            h2 Genres
+            ul
+                each genre in tvShow.genres
+                    li= genre
+            
+        .tv-show-summary
+            h2 Summary
+            p!= tvShow.summary
+        
+        .tv-show-schedule
+            h2 Schedule
+            p #{tvShow.schedule.time} on #{tvShow.schedule.days.join(', ')}
+        
+        .tv-show-externals
+            h2 External Links
+            ul
+                li 
+                a(href=`https://www.imdb.com/title/${tvShow.externals.imdb}` target="_blank") IMDb
+                li 
+                a(href=`https://www.tvmaze.com/shows/${tvShow.externals.thetvdb}` target="_blank") TVMaze
