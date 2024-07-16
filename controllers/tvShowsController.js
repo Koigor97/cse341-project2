@@ -1,4 +1,5 @@
 //* Defining business logic for tv-shows collections
+const slugify = require('slugify');
 
 const TvShow = require('../models/tvShowModel');
 const QueryAPIFeatures = require('../utils/queryFeatures');
@@ -228,7 +229,9 @@ exports.getTvShowDetails = appErrorHandler.catchAsync(
       return next(new AppErrorClass('No tv show found with that ID', 404));
     }
 
-    res.render('pages/tvShowDetail', { title: tvShow.name, tvShow });
+    const slug = slugify(tvShow.name, { lower: true, strict: true });
+
+    res.render('pages/tvShowDetail', { title: tvShow.name, slug, tvShow });
   }
 );
 
