@@ -23,6 +23,9 @@ const tvShowsRoutes = require('./routes/tvShowsRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 const authRoutes = require('./routes/authRoute');
 
+//* require the controllers
+const tvShowsController = require('./controllers/tvShowsController');
+
 // *************************** GLOBALS ****************** */
 
 //* instantiate express app
@@ -34,7 +37,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 //* security middleware for HTTP headers
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'],
+      styleSrc: [
+        "'self'",
+        'https://fonts.googleapis.com',
+        'https://cdn.jsdelivr.net'
+      ],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc: ["'self'", 'https://static.tvmaze.com']
+    }
+  })
+);
 
 //* passport middleware for session
 // app.use(passportConfig.session());
@@ -105,9 +122,10 @@ app.get('/', (req, res) => {
 });
 
 // explore page route
-app.get('/explore', (req, res) => {
-  res.render('pages/explore');
-});
+app.get('/explore', tvShowsController.getExplorePage);
+
+// tvShow details route
+app.get('/tv-show/:tvShowId', tvShowsController.getTvShowDetails);
 
 //*************************** SWAGGER ****************** */
 const swaggerOptions = {
