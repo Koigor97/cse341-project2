@@ -187,6 +187,51 @@ exports.getRunningFoxTvShows = appErrorHandler.catchAsync(
   }
 );
 
+/**
+ * * This controller function gets the TvShows data
+ * * from the database and pass the data to the explore
+ * * page to display a list of TvShows.
+ *
+ * * @param {object} req - The Express request object.
+ * * @param {object} res - The Express response object.
+ * * @param {Function} next - The Express next middleware function.
+ */
+
+exports.getExplorePage = appErrorHandler.catchAsync(async (req, res, next) => {
+  const query = new QueryAPIFeatures(TvShow.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const shows = await query.query;
+  console.log(shows);
+
+  res.render('pages/explore', { shows });
+});
+
+/**
+ * * This controller function gets the TvShow details
+ * * from the database and pass the data to the details
+ * * page to display a list of TvShow details.
+ *
+ * * @param {object} req - The Express request object.
+ * * @param {object} res - The Express response object.
+ * * @param {Function} next - The Express next middleware function.
+ */
+
+exports.getTvShowDetails = appErrorHandler.catchAsync(
+  async (req, res, next) => {
+    const tvShow = await TvShow.findById(req.params.tvShowId);
+
+    if (!tvShow) {
+      return next(new AppErrorClass('No tv show found with that ID', 404));
+    }
+
+    res.render('pages/tvShowDetail', { title: tvShow.name, tvShow });
+  }
+);
+
 // [
 //   {
 //     name: 'John Doe',
