@@ -45,7 +45,8 @@ app.use(
       styleSrc: [
         "'self'",
         'https://fonts.googleapis.com',
-        'https://cdn.jsdelivr.net'
+        'https://cdn.jsdelivr.net',
+        'https://cdnjs.cloudflare.com'
       ],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'https://static.tvmaze.com']
