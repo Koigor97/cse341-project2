@@ -26,7 +26,7 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 50%;
   scroll-behavior: smooth;
 }
 
@@ -70,7 +70,7 @@ p {
 body {
   background-color: var(--bg-color);
   color: var(--text-color-fade-2);
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-family: var(--body-font);
   line-height: 1.5;
 }
@@ -113,7 +113,6 @@ body {
 
 /* ---------- NAVIGATION ---------- */
 
-.navbar-title,
 .page-links,
 .page-links li,
 .project-tags {
@@ -121,27 +120,40 @@ body {
   align-items: center;
 }
 
-.title-first-name,
-.title-last-name {
-  font-size: 2.4rem;
-  font-family: var(--heading-font);
-}
-
 .title-first-name {
-  padding: 0 7.5px;
+  font-size: 1.8rem;
+  font-family: var(--heading-font);
   font-weight: 600;
   color: var(--text-color-fade-2);
-}
-
-.title-last-name {
-  font-weight: 400;
-  color: var(--text-color-2);
   text-decoration: underline wavy 3px var(--primary-color);
   text-underline-offset: 0.5rem;
 }
 
+nav {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--bg-color);
+  z-index: 1;
+  padding: 2rem 2.5rem;
+  border-radius: 0.5rem;
+  transform: translateX(100%);
+  transition:
+    transform 0.5s ease-in,
+    opacity 0.6s ease;
+  opacity: 0;
+  display: none;
+}
+
+.active {
+  display: block;
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .page-links {
-  font-size: 1.6rem;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .page-links li {
@@ -178,13 +190,30 @@ body {
   padding: 0.5rem 1rem;
 }
 
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  outline: 2px solid var(--accent-color);
+  outline-offset: 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.hamburger div {
+  display: inline-block;
+  width: 3rem;
+  height: 3px;
+  background-color: var(--text-color-2);
+  border-radius: 5rem;
+}
+
 /* ---------- SECTION BODY CONTENT ---------- */
 
 .hero-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-template-rows: repeat(2, minmax(300px, 1fr));
-  align-content: center;
+  /* grid-template-rows: repeat(2, minmax(300px, 1fr)); */
   align-items: center;
   max-width: clamp(300px, 90%, 1000px);
   margin: auto;
@@ -568,17 +597,6 @@ footer {
   display: none;
 }
 
-/* Hamburger Menu Styles */
-.hamburger {
-  display: none;
-  cursor: pointer;
-}
-
-.hamburger i {
-  font-size: 2rem;
-  color: #fefefe;
-}
-
 #explore {
   max-width: clamp(300px, 90%, 1000px);
   margin-inline: auto;
@@ -711,28 +729,53 @@ footer {
 
 /*************************** MEDIA QUERIES ****************** */
 
-@media (max-width: 768px) {
-  .navbar-title {
-    flex-direction: column;
-    align-items: flex-start;
+@media only screen and (min-width: 37.5rem) {
+  html {
+    font-size: 62.5%;
   }
 
-  .page-links {
-    flex-direction: column;
-    align-items: flex-start;
-    display: none;
+  h1 {
+    font-size: 5rem;
+    font-weight: 400;
+    line-height: 64px;
   }
 
-  .page-links.active {
+  h2 {
+    font-size: 2.5rem;
+    line-height: 40px;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+
+  h6 {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  .title-first-name {
+    font-size: 2.4rem;
+  }
+
+  nav {
+    position: static;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    transform: translateX(0);
+    opacity: 1;
     display: flex;
   }
 
-  .hamburger {
-    display: block;
+  .page-links {
+    flex-direction: row;
+    gap: 0;
   }
 
-  .hero-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+  .hamburger {
+    display: none;
   }
 }
