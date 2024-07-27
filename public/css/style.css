@@ -192,6 +192,10 @@ nav {
 }
 
 /* ---------- SECTION BODY CONTENT ---------- */
+#content-body {
+  display: flex;
+  flex-direction: column;
+}
 
 .hero-content,
 .hero-section,
@@ -327,10 +331,8 @@ footer {
 .center-container {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
-  height: 100vh;
-  /* max-width: clamp(300px, 90%, 1000px);
-  margin: auto; */
+  margin-top: 7rem;
+  padding-inline: 2rem;
 }
 
 .center-container h2,
@@ -532,6 +534,7 @@ footer {
 }
 
 /********************TV SHOW DETAILS PAGE**********************/
+
 #tv-show-detail-container,
 .tv-show-info {
   display: grid;
